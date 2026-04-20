@@ -1,9 +1,13 @@
 import pickle
 from preprocessing import preprocess_input
 
+import os
+
 def load_artifacts(filepath='model.pkl'):
     """Loads the trained model and preprocessing artifacts."""
-    with open(filepath, 'rb') as f:
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    full_path = os.path.join(base_dir, filepath)
+    with open(full_path, 'rb') as f:
         artifacts = pickle.load(f)
     return artifacts
 
