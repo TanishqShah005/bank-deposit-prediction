@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import predict
+import traceback
 
 app = FastAPI(title="Bank Deposit Prediction API")
 
@@ -15,11 +16,13 @@ app.add_middleware(
 )
 
 # Load artifacts once when starting the server
+load_error = None
 try:
     artifacts = predict.load_artifacts('model.pkl')
     print(f"Loaded artifacts successfully. Model: {artifacts.get('model_name', 'Unknown')}")
 except Exception as e:
-    print(f"Error loading artifacts: {e}")
+    load_error = traceback.format_exc()
+    print(f"Error loading artifacts:\n{load_error}")
     artifacts = None
 
 class CustomerData(BaseModel):
@@ -47,7 +50,8 @@ def read_root():
 @app.post("/predict")
 def make_prediction(data: CustomerData):
     if artifacts is None:
-        raise HTTPException(status_code=500, detail="Model artifacts not loaded.")
+        error_msg = f"Model artifacts not loaded. Details: {load_error}" if load_error else "Model artifacts not loaded."
+        raise HTTPException(status_code=500, detail=error_msg)
         
     try:
         # Convert pydantic model to dict
