@@ -42,7 +42,7 @@ const Prediction = () => {
     setResult(null);
 
     try {
-      const response = await axios.post('http://localhost:8000/predict', formData);
+      const response = await axios.post('https://bank-deposit-prediction.onrender.com', formData);
       setTimeout(() => {
         setResult(response.data);
         setLoading(false);
