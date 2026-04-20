@@ -21,9 +21,17 @@ try:
     artifacts = predict.load_artifacts('model.pkl')
     print(f"Loaded artifacts successfully. Model: {artifacts.get('model_name', 'Unknown')}")
 except Exception as e:
-    load_error = traceback.format_exc()
-    print(f"Error loading artifacts:\n{load_error}")
-    artifacts = None
+    print(f"Initial load failed due to version mismatch or missing file. Error: {e}")
+    print("Attempting to retrain the model locally to match server environment...")
+    try:
+        import train_model
+        train_model.train()
+        artifacts = predict.load_artifacts('model.pkl')
+        print(f"Successfully retrained and loaded artifacts. Model: {artifacts.get('model_name', 'Unknown')}")
+    except Exception as retrain_e:
+        load_error = traceback.format_exc()
+        print(f"Error retraining and loading artifacts:\n{load_error}")
+        artifacts = None
 
 class CustomerData(BaseModel):
     age: int

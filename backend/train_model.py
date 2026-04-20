@@ -13,7 +13,9 @@ from sklearn.metrics import accuracy_score
 
 def train():
     print("Loading dataset...")
-    df = pd.read_csv('bank.csv')
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    csv_path = os.path.join(base_dir, 'bank.csv')
+    df = pd.read_csv(csv_path)
     
     categorical_cols = df.select_dtypes(include=['object']).columns.tolist()
     numerical_cols = df.select_dtypes(include=['int64', 'float64']).columns.tolist()
@@ -87,7 +89,8 @@ def train():
         'label_encoder': le
     }
     
-    with open('model.pkl', 'wb') as f:
+    model_path = os.path.join(base_dir, 'model.pkl')
+    with open(model_path, 'wb') as f:
         pickle.dump(artifacts, f)
     print("Model and preprocessing artifacts saved to model.pkl successfully.")
 
