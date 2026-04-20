@@ -91,15 +91,15 @@ We recommend deploying the **Frontend to Vercel** and the **Backend to Render**.
 
 ### Deploying the Frontend to Vercel
 
-1. **Update API URL**: In `frontend/src/pages/Prediction.jsx`, change the `http://localhost:8000/predict` URL to your Render API URL.
-2. Push your changes to GitHub.
-3. Create a free account on [Vercel](https://vercel.com/).
-4. Click "Add New..." -> "Project" and import your GitHub repository.
-5. Set the following configurations:
+1. Push your latest changes to GitHub.
+2. Create a free account on [Vercel](https://vercel.com/).
+3. Click "Add New..." -> "Project" and import your GitHub repository.
+4. Set the following configurations:
    - **Root Directory**: `frontend`
    - **Framework Preset**: Vite
    - **Build Command**: `npm run build`
    - **Output Directory**: `dist`
+5. **Environment Variables**: Add a new environment variable named `VITE_API_URL` and set its value to your Render backend URL (e.g., `https://your-api.onrender.com`). Do not include `/predict` at the end.
 6. Click **Deploy**. Vercel will build and host your application, providing you with a live URL.
 
 ## Features Included

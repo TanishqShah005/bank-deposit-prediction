@@ -42,7 +42,8 @@ const Prediction = () => {
     setResult(null);
 
     try {
-      const response = await axios.post('https://bank-deposit-prediction.onrender.com/predict', formData);
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+      const response = await axios.post(`${API_URL}/predict`, formData);
       setTimeout(() => {
         setResult(response.data);
         setLoading(false);
